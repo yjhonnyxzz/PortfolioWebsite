@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Sistema de Partículas */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Seções principais */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Header/Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(0, 0, 0, 0.9));
+            position: relative;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid #00ff88;
+            margin: 0 auto 30px;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            padding: 4px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.6);
+            border-color: #00ccff;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #333;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff, #ff0080);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease-in-out infinite;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Setas para baixo */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #00ff88;
+            margin: 5px 0;
+            opacity: 0.7;
+        }
+
+        .arrow:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0.5;
+        }
+
+        .arrow:nth-child(3) {
+            animation-delay: 0.4s;
+            opacity: 0.3;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Seção Habilidades */
+        .skills-section {
+            background: linear-gradient(135deg, rgba(10, 10, 30, 0.9), rgba(0, 0, 0, 0.9));
+            padding: 100px 20px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 60px;
+            color: #00ff88;
+            opacity: 0;
+            transform: translateY(50px);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .skill-card {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: rotateY(360deg);
+        }
+
+        .skill-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+
+        .skill-description {
+            color: #ccc;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Animações de entrada */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-scale {
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Efeitos de hover globais */
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+
+        .hover-glow:hover {
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .skill-card {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Barra de progresso customizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00ff88, #00ccff);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #00ccff, #ff0080);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sistema de Partículas -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Seção Hero -->
+    <section class="section hero">
+        <div class="container">
+            <div class="profile-image" onclick="window.open('https://github.com/Username', '_blank')">
+                <div class="profile-img"></div>
+            </div>
+            
+            <h1 class="hero-title hover-glow">*Seu nome*</h1>
+            <p class="hero-subtitle">Desenvolvedor Full Stack</p>
+            <p class="welcome-text">
+                Bem-vindos ao meu portfólio! Aqui você encontrará uma demonstração das minhas habilidades 
+                e projetos em desenvolvimento web. Clique na imagem para ser redirecionado ao meu perfil no GitHub.
+            </p>
+            
+            <div class="scroll-indicator">
+                <div class="arrow"></div>
+                <div class="arrow"></div>
+                <div class="arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Habilidades -->
+    <section class="section skills-section">
+        <div class="container">
+            <h2 class="section-title hover-glow">Habilidades</h2>
+            
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">JS</div>
+                    <h3 class="skill-name">JavaScript</h3>
+                    <p class="skill-description">
+                        Domino os fundamentos do JavaScript e suas principais funcionalidades modernas. 
+                        Tenho experiência com ES6+, manipulação de DOM e programação assíncrona. 
+                        Trabalho com frameworks e bibliotecas populares do ecossistema JavaScript. 
+                        Consigo desenvolver aplicações interativas e dinâmicas com boa performance. 
+                        Estou sempre aprendendo sobre novas features e melhores práticas da linguagem.
+                    </p>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">HTML</div>
+                    <h3 class="skill-name">HTML</h3>
+                    <p class="skill-description">
+                        Tenho sólido conhecimento em HTML5 e suas tags semânticas modernas. 
+                        Sei estruturar páginas web de forma acessível e otimizada para SEO. 
+                        Compreendo a importância da marcação semântica para diferentes dispositivos. 
+                        Trabalho com formulários avançados, APIs do HTML5 e integração com outras tecnologias. 
+                        Foco sempre em criar estruturas limpas e bem organizadas para facilitar a manutenção.
+                    </p>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">CSS</div>
+                    <h3 class="skill-name">CSS</h3>
+                    <p class="skill-description">
+                        Possuo conhecimento avançado em CSS3 e suas propriedades mais modernas. 
+                        Trabalho com Flexbox, Grid Layout e técnicas de design responsivo. 
+                        Sei criar animações suaves e transições elegantes para melhorar a experiência do usuário. 
+                        Tenho experiência com pré-processadores e metodologias de organização de código CSS. 
+                        Sempre busco otimizar o desempenho e manter um código limpo e reutilizável.
+                    </p>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">PY</div>
+                    <h3 class="skill-name">Python</h3>
+                    <p class="skill-description">
+                        Tenho uma base sólida em Python e suas bibliotecas mais utilizadas. 
+                        Trabalho com programação orientada a objetos e paradigmas funcionais da linguagem. 
+                        Possuo experiência em automação de tarefas e desenvolvimento de scripts úteis. 
+                        Conheço frameworks web como Flask e Django para desenvolvimento backend. 
+                        Estou sempre explorando novas bibliotecas e expandindo meus conhecimentos na linguagem.
+                    </p>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">LUA</div>
+                    <h3 class="skill-name">Lua</h3>
+                    <p class="skill-description">
+                        Compreendo os conceitos fundamentais da linguagem Lua e sua sintaxe limpa. 
+                        Tenho experiência em scripting e integração com outras aplicações e jogos. 
+                        Trabalho com as estruturas de dados nativas e padrões de programação em Lua. 
+                        Sei aproveitar a leveza e flexibilidade da linguagem para soluções específicas. 
+                        Continuo aprimorando minhas habilidades e explorando casos de uso avançados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sistema de Partículas
+        class ParticleSystem {
+            constructor() {
+                this.container = document.getElementById('particles');
+                this.particles = [];
+                this.maxParticles = 50;
+                this.createParticles();
+            }
+
+            createParticles() {
+                setInterval(() => {
+                    if (this.particles.length < this.maxParticles) {
+                        this.createParticle();
+                    }
+                }, 300);
+            }
+
+            createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Propriedades aleatórias
+                const size = Math.random() * 4 + 2;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 3 + 4;
+                const delay = Math.random() * 2;
+                
+                particle.style.cssText = `
+                    left: ${startX}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                `;
+                
+                this.container.appendChild(particle);
+                this.particles.push(particle);
+                
+                // Remove partícula após animação
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                        this.particles = this.particles.filter(p => p !== particle);
+                    }
+                }, (duration + delay) * 1000);
+            }
+        }
+
+        // Sistema de Animação ao Scroll
+        class ScrollAnimations {
+            constructor() {
+                this.elements = document.querySelectorAll('.hero-title, .hero-subtitle, .welcome-text, .section-title, .skill-card');
+                this.observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                this.init();
+            }
+
+            init() {
+                // Animação inicial do hero
+                this.animateHeroElements();
+                
+                // Observer para outras seções
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            this.animateElement(entry.target);
+                        }
+                    });
+                }, this.observerOptions);
+
+                this.elements.forEach(el => observer.observe(el));
+            }
+
+            animateHeroElements() {
+                const title = document.querySelector('.hero-title');
+                const subtitle = document.querySelector('.hero-subtitle');
+                const welcomeText = document.querySelector('.welcome-text');
+
+                setTimeout(() => title.classList.add('fade-in-up'), 500);
+                setTimeout(() => subtitle.classList.add('fade-in-up'), 800);
+                setTimeout(() => welcomeText.classList.add('fade-in-up'), 1100);
+            }
+
+            animateElement(element) {
+                if (element.classList.contains('skill-card')) {
+                    element.classList.add('fade-in-scale');
+                } else {
+                    element.classList.add('fade-in-up');
+                }
+            }
+        }
+
+        // Sistema de Efeitos de Hover
+        class HoverEffects {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                // Efeito de movimento do mouse nas skill cards
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = (y - centerY) / 10;
+                        const rotateY = (centerX - x) / 10;
+                        
+                        card.style.transform = `
+                            translateY(-10px) 
+                            scale(1.02) 
+                            rotateX(${rotateX}deg) 
+                            rotateY(${rotateY}deg)
+                        `;
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = '';
+                    });
+                });
+
+                // Efeito parallax suave
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = document.querySelectorAll('.section');
+                    
+                    parallaxElements.forEach((element, index) => {
+                        const speed = 0.5;
+                        const yPos = -(scrolled * speed * (index + 1) * 0.1);
+                        element.style.transform = `translateY(${yPos}px)`;
+                    });
+                });
+            }
+        }
+
+        // Sistema de Performance
+        class PerformanceOptimizer {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                // Lazy loading para animações pesadas
+                this.optimizeAnimations();
+                
+                // Throttle para eventos de scroll
+                this.throttleScrollEvents();
+            }
+
+            optimizeAnimations() {
+                // Reduz animações se o usuário preferir menos movimento
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.body.style.setProperty('--animation-duration', '0.1s');
+                }
+            }
+
+            throttleScrollEvents() {
+                let ticking = false;
+                
+                function updateAnimations() {
+                    // Atualiza animações baseadas em scroll
+                    ticking = false;
+                }
+                
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(updateAnimations);
+                        ticking = true;
+                    }
+                });
+            }
+        }
+
+        // Inicialização quando DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            new ParticleSystem();
+            new ScrollAnimations();
+            new HoverEffects();
+            new PerformanceOptimizer();
+            
+            // Efeito de typing no título (opcional)
+            setTimeout(() => {
+                const title = document.querySelector('.hero-title');
+                if (title) {
+                    title.style.borderRight = '3px solid #00ff88';
+                    title.style.animation += ', blink 1s infinite';
+                }
+            }, 2000);
+        });
+
+        // CSS adicional via JavaScript para efeitos dinâmicos
+        const additionalStyles = `
+            @keyframes blink {
+                0%, 50% { border-right-color: transparent; }
+                51%, 100% { border-right-color: #00ff88; }
+            }
+            
+            .skill-card {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            
+            .hero {
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = additionalStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
